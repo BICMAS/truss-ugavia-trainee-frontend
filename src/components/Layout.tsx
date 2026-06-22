@@ -93,15 +93,16 @@ const NavItem: React.FC<NavItemProps> = ({
       <button
         type="button"
         onClick={() => onNavigate(item.path)}
-        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${
+        className={`flex min-h-[52px] min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-lg px-0.5 py-1 transition-all ${
           isActive
             ? "text-brand-green bg-brand-yellow/20"
-            : "text-slate-500 hover:text-brand-green hover:bg-brand-green/5"
+            : "text-slate-500 active:bg-brand-green/5"
         }`}
         aria-current={isActive ? "page" : undefined}
+        aria-label={item.label}
       >
-        <Icon size={22} className="mb-0.5" />
-        <span className="text-[10px] font-semibold uppercase tracking-wide">
+        <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+        <span className="max-w-full truncate text-[9px] font-semibold uppercase tracking-wide sm:text-[10px]">
           {item.label}
         </span>
       </button>
@@ -150,33 +151,44 @@ export const Layout: React.FC = () => {
   return (
     <div className="min-h-screen brand-gradient-soft flex flex-col md:flex-row">
       {isInstallable && !dismissed && (
-        <div className="fixed bottom-20 md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-brand-green text-white rounded-2xl shadow-xl p-4 flex items-center gap-3 z-50 border border-brand-yellow/30">
-          <div className="p-2 rounded-lg bg-brand-yellow/20">
-            <Download size={20} className="text-brand-yellow" />
-          </div>
-          <div className="flex-1">
-            <p className="font-semibold text-sm">Install {BRAND.name}</p>
-            <p className="text-xs text-white/70">
-              Learn offline. Faster access. No browser needed.
-            </p>
+        <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] left-3 right-3 z-50 flex flex-col gap-3 rounded-2xl border border-brand-yellow/30 bg-brand-green p-4 text-white shadow-xl sm:bottom-4 sm:left-auto sm:right-4 sm:w-96 sm:flex-row sm:items-center md:bottom-4">
+          <div className="flex items-start gap-3 sm:flex-1">
+            <div className="shrink-0 rounded-lg bg-brand-yellow/20 p-2">
+              <Download size={20} className="text-brand-yellow" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold">Install {BRAND.name}</p>
+              <p className="text-xs text-white/70">
+                Learn offline. Faster access. No browser needed.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setDismissed(true)}
+              className="shrink-0 text-white/50 active:text-white sm:hidden"
+              aria-label="Dismiss install prompt"
+            >
+              <X size={16} />
+            </button>
           </div>
 
-          <button
-            type="button"
-            onClick={promptInstall}
-            className="brand-btn-primary px-3 py-1.5 text-sm"
-          >
-            Install
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setDismissed(true)}
-            className="text-white/50 hover:text-white"
-            aria-label="Dismiss install prompt"
-          >
-            <X size={16} />
-          </button>
+          <div className="flex items-center gap-2 sm:shrink-0">
+            <button
+              type="button"
+              onClick={promptInstall}
+              className="brand-btn-primary min-h-10 flex-1 px-4 py-2 text-sm sm:flex-none"
+            >
+              Install
+            </button>
+            <button
+              type="button"
+              onClick={() => setDismissed(true)}
+              className="hidden text-white/50 hover:text-white sm:block"
+              aria-label="Dismiss install prompt"
+            >
+              <X size={16} />
+            </button>
+          </div>
         </div>
       )}
 
@@ -237,32 +249,32 @@ export const Layout: React.FC = () => {
         </div>
       </aside>
 
-      <main className="flex-1 md:ml-64 pb-20 md:pb-0 min-h-screen">
-        <header className="bg-white/90 backdrop-blur-md sticky top-0 z-20 px-6 py-4 border-b border-brand-green/10 flex justify-between items-center shadow-sm">
-          <div>
-            <h1 className="text-xl font-bold text-brand-green">
+      <main className="flex min-h-dvh flex-1 flex-col md:ml-64">
+        <header className="sticky top-0 z-20 flex shrink-0 items-center justify-between gap-3 border-b border-brand-green/10 bg-white/90 px-4 py-3 shadow-sm backdrop-blur-md sm:px-6 sm:py-4 pt-safe">
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-lg font-bold text-brand-green sm:text-xl">
               {activeItem.title}
             </h1>
-            <p className="text-xs text-slate-500 hidden sm:block">
+            <p className="hidden truncate text-xs text-slate-500 sm:block">
               {BRAND.name} · {BRAND.tagline}
             </p>
           </div>
 
-          <div className="flex md:hidden items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3 md:hidden">
             <img
               src={BRAND.logo}
               alt={BRAND.name}
-              className="h-14 w-auto object-contain"
+              className="h-8 w-auto object-contain min-[400px]:block sm:h-10 hidden"
             />
             <div
-              className={`p-2 rounded-full ${
+              className={`rounded-full p-2 ${
                 isOffline
                   ? "bg-orange-100 text-orange-600"
                   : "bg-brand-green/10 text-brand-green"
               }`}
               title={isOffline ? "You are offline" : "You are online"}
             >
-              {isOffline ? <WifiOff size={18} /> : <Wifi size={18} />}
+              {isOffline ? <WifiOff size={16} /> : <Wifi size={16} />}
             </div>
             <img
               src={user.avatar || FALLBACK_AVATAR}
@@ -273,11 +285,11 @@ export const Layout: React.FC = () => {
                   target.src = FALLBACK_AVATAR;
                 }
               }}
-              className="w-8 h-8 rounded-full border-2 border-brand-yellow/50"
+              className="h-8 w-8 rounded-full border-2 border-brand-yellow/50 sm:h-9 sm:w-9"
             />
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden items-center gap-4 md:flex">
             {isOffline ? (
               <div className="text-xs text-orange-700 font-semibold px-3 py-1.5 bg-orange-50 rounded-full border border-orange-100">
                 Offline Mode
@@ -290,12 +302,12 @@ export const Layout: React.FC = () => {
           </div>
         </header>
 
-        <div className="p-6 max-w-7xl mx-auto h-[calc(100vh-80px)] overflow-y-auto custom-scrollbar">
+        <div className="flex-1 overflow-y-auto px-4 py-4 custom-scrollbar sm:p-6 max-w-7xl mx-auto w-full pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-6">
           <Outlet />
         </div>
       </main>
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-brand-green/10 flex justify-around p-2 z-40 pb-safe shadow-[0_-4px_20px_rgba(18,112,76,0.08)]">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 flex border-t border-brand-green/10 bg-white px-1 pb-safe pt-1 shadow-[0_-4px_20px_rgba(18,112,76,0.08)] md:hidden">
         {NAV_ITEMS.map((item) => (
           <NavItem
             key={item.id}
