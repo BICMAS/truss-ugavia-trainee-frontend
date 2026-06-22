@@ -259,7 +259,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         placeholder="Enter your email"
-                        className="brand-input pl-24"
+                        className="brand-input pl-[40px]"
                       />
                     </div>
                   </div>
@@ -286,7 +286,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         required
                         placeholder="123-456-7890"
-                        className="brand-input pl-24"
+                        className="brand-input pl-[40px]"
                       />
                     </div>
                   </div>
@@ -313,7 +313,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="brand-input pl-24 pr-12"
+                      className="brand-input pl-[40px] pr-12"
                     />
                     <button
                       type="button"
