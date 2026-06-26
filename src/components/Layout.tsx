@@ -197,10 +197,10 @@ export const Layout: React.FC = () => {
           <img
             src={BRAND.logo}
             alt={BRAND.name}
-            className="w-full max-w-[15rem] h-auto object-contain brightness-0 invert"
+            className="w-full max-w-[15rem] h-auto object-contain"
           />
           <p className="text-brand-yellow text-xs font-semibold uppercase tracking-widest mt-3">
-            Learning Portal
+            Skills Foundry Learning Portal
           </p>
         </div>
 

@@ -1,8 +1,9 @@
 export const BRAND = {
   name: "Truss Ugavi",
   shortName: "Truss Ugavi",
-  tagline: "Trainee Learning Portal",
+  tagline: "Skills Foundry Learning Portal",
   logo: "/img/truss-ugavi-logo.png",
+  logoColor: "/img/truss-ugavi-main-logo.png",
   colors: {
     green: "#12704c",
     greenDark: "#0d5539",

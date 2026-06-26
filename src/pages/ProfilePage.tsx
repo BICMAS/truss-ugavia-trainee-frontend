@@ -46,7 +46,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="brand-card p-6 flex items-center gap-4">
-        <img src={BRAND.logo} alt={BRAND.name} className="h-20 w-auto object-contain" />
+        <img src={BRAND.logoColor} alt={BRAND.name} className="h-20 w-auto object-contain" />
         <div>
           <p className="font-semibold text-brand-green">{BRAND.name}</p>
           <p className="text-sm text-slate-500">{BRAND.tagline}</p>

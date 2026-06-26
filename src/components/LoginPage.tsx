@@ -17,8 +17,10 @@ import { BRAND } from "@/config/brand";
 import {
   createDemoAuthPayload,
   createDemoLoginResponse,
+  DEMO_ACCOUNTS,
   DEMO_CREDENTIALS,
-  matchesDemoCredentials,
+  type DemoAccount,
+  findDemoAccount,
 } from "@/demo";
 
 interface LoginPageProps {
@@ -43,9 +45,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const completeLogin = (data: ReturnType<typeof createDemoLoginResponse>) => {
-    saveAuth(createDemoAuthPayload());
-    onLogin(data);
+  const completeLogin = (account: DemoAccount) => {
+    saveAuth(createDemoAuthPayload(account));
+    onLogin(createDemoLoginResponse(account));
   };
 
   const handleDemoLogin = () => {
@@ -56,7 +58,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       setLoginMode("EMAIL");
       setEmail(DEMO_CREDENTIALS.email);
       setPassword(DEMO_CREDENTIALS.password);
-      completeLogin(createDemoLoginResponse());
+      completeLogin(DEMO_ACCOUNTS[0]);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Demo login failed";
       setError(message);
@@ -71,8 +73,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     setIsLoading(true);
 
     try {
-      if (matchesDemoCredentials(loginMode, email, phoneNumber, password)) {
-        completeLogin(createDemoLoginResponse());
+      const demoAccount = findDemoAccount(
+        loginMode,
+        email,
+        phoneNumber,
+        password,
+      );
+      if (demoAccount) {
+        completeLogin(demoAccount);
         return;
       }
 
@@ -127,7 +135,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           <img
             src={BRAND.logo}
             alt={BRAND.name}
-            className="mx-auto h-auto w-full max-w-[11rem] object-contain brightness-0 invert"
+            className="mx-auto h-auto w-full max-w-[11rem] object-contain"
           />
           <p className="mt-3 text-center text-xs font-semibold uppercase tracking-widest text-brand-yellow">
             {BRAND.tagline}
@@ -158,7 +166,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <img
               src={BRAND.logo}
               alt={BRAND.name}
-              className="mb-8 h-auto w-full max-w-[18rem] object-contain brightness-0 invert"
+              className="mb-8 h-auto w-full max-w-[18rem] object-contain"
             />
             <h1 className="text-3xl font-bold leading-tight text-white">
               Welcome to
